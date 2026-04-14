@@ -12,4 +12,4 @@ if __name__ == "__main__":
     host = "0.0.0.0" if os.environ.get("PORT") else "127.0.0.1"
     
     print(f"正在啟動 Antigravity 股票分析網頁版 (連接埠: {port})...")
-    uvicorn.run("backend.main:app", host=host, port=port, reload=True)
+    uvicorn.run("main:app", host=host, port=port, reload=True)

@@ -8,17 +8,18 @@ import asyncio
 from datetime import datetime
 import json
 
-from .database import SessionLocal, init_db, StockSignal, AppConfig
-from .scanner_engine import ScannerEngine
-from .notifier import Notifier
+from database import SessionLocal, init_db, StockSignal, AppConfig
+from scanner_engine import ScannerEngine
+from notifier import Notifier
 from pathlib import Path
 
 # 定義基礎目錄，確保在雲端環境也能正確找到模板與靜態檔案
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+# 在扁平化結構中，靜態檔案和模板都在根目錄
+app.mount("/static", StaticFiles(directory=str(BASE_DIR)), name="static")
+templates = Jinja2Templates(directory=str(BASE_DIR))
 
 # 初始化資料庫
 init_db()

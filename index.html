@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="glass-card stat-card">
+        <span class="stat-label">今日發現</span>
+        <span class="stat-value" id="today-count">
+            {{ signals|length if signals else 0 }}
+        </span>
+    </div>
+    <div class="glass-card stat-card">
+        <span class="stat-label">系統狀態</span>
+        <div class="scanning-indicator" id="scan-status" style="display: none;">
+            <div class="dot"></div> 掃描進行中...
+        </div>
+        <span class="stat-value" id="idle-status">就緒</span>
+    </div>
+    <div class="glass-card stat-card">
+        <span class="stat-label">操作中心</span>
+        <button class="btn btn-primary" onclick="triggerScan()">
+            立即執行掃描
+        </button>
+    </div>
+</div>
+
+<div class="glass-card" style="margin-top: 2rem;">
+    <table id="main-table">
+        <thead>
+            <tr>
+                <th class="sortable" data-type="string">代號</th>
+                <th class="sortable" data-type="string">名稱</th>
+                <th class="sortable" data-type="date">突破日期</th>
+                <th class="sortable" data-type="number">突破價格</th>
+                <th class="sortable" data-type="date">拉回日期</th>
+                <th class="sortable" data-type="number">拉回價格</th>
+                <th class="sortable" data-type="number">MA5</th>
+            </tr>
+        </thead>
+        <tbody id="signal-table">
+            {% for signal in signals %}
+            <tr>
+                <td><b>{{ signal.symbol }}</b></td>
+                <td>{{ signal.name }}</td>
+                <td>{{ signal.breakout_date }}</td>
+                <td>{{ signal.breakout_price }}</td>
+                <td>{{ signal.pullback_date }}</td>
+                <td>{{ signal.pullback_price }}</td>
+                <td><span class="badge badge-success">{{ signal.ma5_price }}</span></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted);">尚未有掃描紀錄</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+    <h2>系統設定</h2>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">設定通知權杖與自動掃描排程</p>
+
+    <form action="/settings/save" method="POST">
+        <section style="margin-bottom: 3rem;">
+            <h3 style="margin-bottom: 1rem; color: var(--primary);">Telegram 通知</h3>
+            <div class="checkbox-group">
+                <input type="checkbox" id="enable_telegram" name="enable_telegram" {{ 'checked' if config.enable_telegram == 'true' else '' }}>
+                <label for="enable_telegram">啟用 Telegram 通知</label>
+            </div>
+            <div class="form-group">
+                <label>Bot Token</label>
+                <input type="password" name="telegram_token" value="{{ config.telegram_token or '' }}" placeholder="123456789:ABCDE...">
+            </div>
+            <div class="form-group">
+                <label>Chat ID</label>
+                <input type="text" name="telegram_chat_id" value="{{ config.telegram_chat_id or '' }}" placeholder="-100123456789">
+            </div>
+        </section>
+
+        <section style="margin-bottom: 3rem;">
+            <h3 style="margin-bottom: 1rem; color: var(--primary);">Email 通知 (Gmail)</h3>
+            <div class="checkbox-group">
+                <input type="checkbox" id="enable_email" name="enable_email" {{ 'checked' if config.enable_email == 'true' else '' }}>
+                <label for="enable_email">啟用 Email 通知</label>
+            </div>
+            <div class="form-group">
+                <label>您的 Email</label>
+                <input type="text" name="sender_email" value="{{ config.sender_email or '' }}" placeholder="example@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>Gmail 應用程式密碼</label>
+                <input type="password" name="gmail_password" value="{{ config.gmail_password or '' }}" placeholder="xxxx xxxx xxxx xxxx">
+            </div>
+            <div class="form-group">
+                <label>接收通知的 Email</label>
+                <input type="text" name="receiver_email" value="{{ config.receiver_email or '' }}" placeholder="target@example.com">
+            </div>
+        </section>
+
+        <section style="margin-bottom: 3rem;">
+            <h3 style="margin-bottom: 1rem; color: var(--primary);">自動排程</h3>
+            <div class="form-group">
+                <label>每日執行時間 (24小時制)</label>
+                <input type="time" name="scan_time" value="{{ config.scan_time or '15:30' }}">
+            </div>
+        </section>
+
+        <div style="display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn btn-primary">儲存設定</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
